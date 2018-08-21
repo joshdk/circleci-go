@@ -51,4 +51,6 @@ workflows:
   build:
     jobs:
     - generate
-    - format
+    - format:
+        requires:
+        - build
