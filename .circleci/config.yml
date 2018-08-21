@@ -23,7 +23,7 @@ jobs:
               --output client
     - run:
         name: Verify files are correctly generated
-        command: test -z "$(git ls-files -m)"
+        command: test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
 
   format:
     docker:
