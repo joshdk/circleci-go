@@ -40,8 +40,8 @@ jobs:
         name: Format files
         command: |
           gofiles="$(find . -name '*.go' | grep -v /vendor/)"
-          gofmt -l -s  $gofiles
-          goimports -l $gofiles
+          gofmt -l -s -w $gofiles
+          goimports -l -w $gofiles
     - run:
         name: Verify no files changed
         command: test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
