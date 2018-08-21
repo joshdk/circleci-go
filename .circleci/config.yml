@@ -15,7 +15,7 @@ jobs:
     - run:
         name: Regenerate client
         command: |
-          jav -jar /opt/swagger-codegen-cli/swagger-codegen-cli.jar \
+          java -jar /opt/swagger-codegen-cli/swagger-codegen-cli.jar \
             generate \
               --config /local/config.json \
               --input-spec /local/swagger.yml \
