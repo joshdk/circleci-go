@@ -10,7 +10,7 @@ jobs:
         name: Install dependencies
         command: |
           apk update
-          apk add git
+          apk add git openssh-client
     - checkout
     - run:
         name: Regenerate client
