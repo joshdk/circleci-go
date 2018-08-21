@@ -44,7 +44,9 @@ jobs:
           goimports -l -w $gofiles
     - run:
         name: Verify no files changed
-        command: test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
+        command: |
+          git status
+          test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
 
 workflows:
   version: 2
