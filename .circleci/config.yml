@@ -21,27 +21,30 @@ jobs:
               --input-spec swagger.yml \
               --lang go \
               --output client
-    - run:
-        name: Verify files are correctly generated
-        command: test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
+    - persist_to_workspace:
+        root: /go/src/github.com/joshdk
+        paths:
+        - circleci-go
 
   format:
     docker:
     - image: circleci/golang:1.10.3
     working_directory: /go/src/github.com/joshdk/circleci-go
     steps:
-    - checkout
+    - attach_workspace:
+        at: /go/src/github.com/joshdk
     - run:
         name: Install dependencies
-        working_directory: /tmp
-        command: |
-          go get golang.org/x/tools/cmd/goimports
+        command: go get golang.org/x/tools/cmd/goimports
     - run:
-        name: Verify files are correctly formatted
+        name: Format files
         command: |
           gofiles="$(find . -name '*.go' | grep -v /vendor/)"
-          test -z "$(gofmt -l -s  $gofiles)"
-          test -z "$(goimports -l $gofiles)"
+          gofmt -l -s  $gofiles
+          goimports -l $gofiles
+    - run:
+        name: Verify no files changed
+        command: test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
 
 workflows:
   version: 2
