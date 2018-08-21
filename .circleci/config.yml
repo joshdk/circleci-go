@@ -17,10 +17,10 @@ jobs:
         command: |
           java -jar /opt/swagger-codegen-cli/swagger-codegen-cli.jar \
             generate \
-              --config /local/config.json \
-              --input-spec /local/swagger.yml \
+              --config config.json \
+              --input-spec swagger.yml \
               --lang go \
-              --output /local/client
+              --output client
     - run:
         name: Verify files are correctly generated
         command: test -z "$(git ls-files -m)"
