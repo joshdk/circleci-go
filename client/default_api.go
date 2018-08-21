@@ -10,11 +10,13 @@
 package client
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-	"context"
+
+	"golang.org/x/net/context"
 )
 
 // Linger please
@@ -24,20 +26,17 @@ var (
 
 type DefaultApiService service
 
-/* 
-DefaultApiService
+/* DefaultApiService
 Provides information about the signed in user.
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-
-@return User
-*/
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@return User*/
 func (a *DefaultApiService) Me(ctx context.Context) (User, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody   interface{}
 		localVarFileName   string
 		localVarFileBytes  []byte
-		localVarReturnValue User
+		successPayload     User
 	)
 
 	// create path and map variables
@@ -57,7 +56,9 @@ func (a *DefaultApiService) Me(ctx context.Context) (User, *http.Response, error
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
+	localVarHttpHeaderAccepts := []string{
+		"application/json",
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -73,58 +74,27 @@ func (a *DefaultApiService) Me(ctx context.Context) (User, *http.Response, error
 			} else {
 				key = auth.Key
 			}
-			
 			localVarQueryParams.Add("circle-token", key)
 		}
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return successPayload, nil, err
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
-		return localVarReturnValue, localVarHttpResponse, err
+		return successPayload, localVarHttpResponse, err
 	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
-	localVarHttpResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHttpResponse, err
-	}
-
-	if localVarHttpResponse.StatusCode < 300 {
-		// If we succeed, return the data, otherwise pass on to decode error.
-		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-		if err == nil { 
-			return localVarReturnValue, localVarHttpResponse, err
-		}
-	}
-
+	defer localVarHttpResponse.Body.Close()
 	if localVarHttpResponse.StatusCode >= 300 {
-		newErr := GenericSwaggerError{
-			body: localVarBody,
-			error: localVarHttpResponse.Status,
-		}
-		
-		if localVarHttpResponse.StatusCode == 200 {
-			localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
-			if err != nil {
-				return localVarReturnValue, localVarHttpResponse, err
-			}
-
-			var v User
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"));
-				if err != nil {
-					newErr.error = err.Error()
-					return localVarReturnValue, localVarHttpResponse, newErr
-				}
-				newErr.model = v
-				return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		
-		return localVarReturnValue, localVarHttpResponse, newErr
+		bodyBytes, _ := ioutil.ReadAll(localVarHttpResponse.Body)
+		return successPayload, localVarHttpResponse, reportError("Status: %v, Body: %s", localVarHttpResponse.Status, bodyBytes)
 	}
 
-	return localVarReturnValue, localVarHttpResponse, nil
+	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
+		return successPayload, localVarHttpResponse, err
+	}
+
+	return successPayload, localVarHttpResponse, err
 }

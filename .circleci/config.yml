@@ -1,0 +1,58 @@
+version: 2
+
+jobs:
+  generate:
+    docker:
+    - image: swaggerapi/swagger-codegen-cli:v2.3.1
+    working_directory: /go/src/github.com/joshdk/circleci-go
+    steps:
+    - run:
+        name: Install dependencies
+        command: |
+          apk update
+          apk add git openssh-client
+    - checkout
+    - run:
+        name: Regenerate client
+        command: |
+          java -jar /opt/swagger-codegen-cli/swagger-codegen-cli.jar \
+            generate \
+              --config config.json \
+              --input-spec swagger.yml \
+              --lang go \
+              --output client
+    - persist_to_workspace:
+        root: /go/src/github.com/joshdk
+        paths:
+        - circleci-go
+
+  format:
+    docker:
+    - image: circleci/golang:1.10.3
+    working_directory: /go/src/github.com/joshdk/circleci-go
+    steps:
+    - attach_workspace:
+        at: /go/src/github.com/joshdk
+    - run:
+        name: Install dependencies
+        command: go get golang.org/x/tools/cmd/goimports
+    - run:
+        name: Format files
+        command: |
+          gofiles="$(find . -name '*.go' | grep -v /vendor/)"
+          gofmt -l -s -w $gofiles
+          goimports -l -w $gofiles
+    - run:
+        name: Verify no files changed
+        command: |
+          git status
+          test -z "$(git ls-files --deleted --exclude-standard --modified --others)"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - generate
+    - format:
+        requires:
+        - generate

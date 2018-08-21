@@ -11,5 +11,6 @@ package client
 
 type User struct {
 	SelectedEmail string `json:"selected_email,omitempty"`
+
 	Login string `json:"login,omitempty"`
 }
