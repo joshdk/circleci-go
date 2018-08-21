@@ -1,0 +1,7 @@
+client/.swagger-codegen
+client/.gitignore
+client/.travis.yml
+client/README.md
+client/api/
+client/docs/
+client/git_push.sh
