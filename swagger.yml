@@ -1,0 +1,46 @@
+swagger: "2.0"
+
+info:
+  version: 1.1
+  title: CircleCI API
+  description: The CircleCI API is a fully-featured JSON API that allows you to access all information and trigger all actions in CircleCI.
+
+host: circleci.com
+basePath: /api/v1.1
+schemes:
+- https
+
+security:
+- ApiKeyAuth: []
+
+securityDefinitions:
+  ApiKeyAuth:
+    in: query
+    name: circle-token
+    type: apiKey
+
+produces:
+- application/json
+consumes:
+- application/json
+
+paths:
+  /me:
+    get:
+      operationId: me
+      description: "Provides information about the signed in user."
+      responses:
+        200:
+          description: signed in user
+          schema:
+            "$ref": "#/definitions/User"
+
+definitions:
+  User:
+    type: object
+    properties:
+      selected_email:
+        format: email
+        type: string
+      login:
+        type: string
