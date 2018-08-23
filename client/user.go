@@ -9,8 +9,60 @@
 
 package client
 
+import (
+	"time"
+)
+
 type User struct {
-	SelectedEmail string `json:"selected_email,omitempty"`
+	Admin bool `json:"admin,omitempty"`
+
+	AllEmails []string `json:"all_emails,omitempty"`
+
+	AnalyticsId string `json:"analytics_id,omitempty"`
+
+	AvatarUrl string `json:"avatar_url,omitempty"`
+
+	BasicEmailPrefs string `json:"basic_email_prefs,omitempty"`
+
+	Bitbucket *BitbucketInfo `json:"bitbucket,omitempty"`
+
+	BitbucketAuthorized bool `json:"bitbucket_authorized,omitempty"`
+
+	Containers int32 `json:"containers,omitempty"`
+
+	CreatedAt time.Time `json:"created_at,omitempty"`
+
+	DaysLeftInTrial int32 `json:"days_left_in_trial,omitempty"`
+
+	DevAdmin bool `json:"dev_admin,omitempty"`
+
+	FirstVcsAuthorizedClientId string `json:"first_vcs_authorized_client_id,omitempty"`
+
+	GithubId int32 `json:"github_id,omitempty"`
+
+	GithubOauthScopes []string `json:"github_oauth_scopes,omitempty"`
+
+	Identities *UserIdentities `json:"identities,omitempty"`
+
+	InBetaProgram bool `json:"in_beta_program,omitempty"`
 
 	Login string `json:"login,omitempty"`
+
+	Name string `json:"name,omitempty"`
+
+	NumProjectsFollowed int32 `json:"num_projects_followed,omitempty"`
+
+	Parallelism int32 `json:"parallelism,omitempty"`
+
+	Projects map[string]Project `json:"projects,omitempty"`
+
+	PusherId string `json:"pusher_id,omitempty"`
+
+	SelectedEmail string `json:"selected_email,omitempty"`
+
+	SignInCount int32 `json:"sign_in_count,omitempty"`
+
+	Student bool `json:"student,omitempty"`
+
+	TrialEnd time.Time `json:"trial_end,omitempty"`
 }
