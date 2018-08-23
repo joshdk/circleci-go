@@ -36,11 +36,137 @@ paths:
             "$ref": "#/definitions/User"
 
 definitions:
+  BitbucketIdentity:
+    type: object
+    properties:
+      authorized?:
+        type: boolean
+      avatar_url:
+        type: string
+      domain:
+        type: string
+      external_id:
+        type: string
+      id:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      provider_id:
+        type: string
+      type:
+        type: string
+      user?:
+        type: boolean
+
+  BitbucketInfo:
+    type: object
+    properties:
+      id:
+        type: string
+      login:
+        type: string
+
+  GitHubIdentity:
+    type: object
+    properties:
+      authorized?:
+        type: boolean
+      avatar_url:
+        type: string
+      domain:
+        type: string
+      external_id:
+        type: integer
+      id:
+        type: integer
+      login:
+        type: string
+      name:
+        type: string
+      provider_id:
+        type: string
+      type:
+        type: string
+      user?:
+        type: boolean
+
+  Project:
+    type: object
+    properties:
+      emails:
+        type: string
+      on_dashboard:
+        type: boolean
+
   User:
     type: object
     properties:
+      admin:
+        type: boolean
+      all_emails:
+        type: array
+        items:
+          type: string
+          format: email
+      analytics_id:
+        type: string
+      avatar_url:
+        type: string
+      basic_email_prefs:
+        type: string
+      bitbucket:
+        $ref: "#/definitions/BitbucketInfo"
+      bitbucket_authorized:
+        type: boolean
+      containers:
+        type: integer
+      created_at:
+        format: date-time
+        type: string
+      days_left_in_trial:
+        type: integer
+      dev_admin:
+        type: boolean
+      first_vcs_authorized_client_id:
+        type: string
+      github_id:
+        type: integer
+      github_oauth_scopes:
+        type: array
+        items:
+          type: string
+      identities:
+        type: object
+        properties:
+          bitbucket:
+            $ref: "#/definitions/BitbucketIdentity"
+          github:
+            $ref: "#/definitions/GitHubIdentity"
+      in_beta_program:
+        type: boolean
+      login:
+        type: string
+      name:
+        type: string
+      num_projects_followed:
+        type: integer
+      parallelism:
+        type: integer
+      projects:
+        type: object
+        additionalProperties:
+          $ref: "#/definitions/Project"
+      pusher_id:
+        type: string
       selected_email:
         format: email
         type: string
-      login:
+      sign_in_count:
+        type: integer
+      student:
+        type: boolean
+      trial_end:
+        format: date-time
         type: string
