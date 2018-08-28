@@ -35,6 +35,16 @@ paths:
           schema:
             "$ref": "#/definitions/User"
 
+  /recent-builds:
+    get:
+      description: "Build summary for each of the last 30 recent builds, ordered by build_num."
+      responses:
+        200:
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Build"
+
 definitions:
   BitbucketIdentity:
     type: object
@@ -170,3 +180,159 @@ definitions:
       trial_end:
         format: date-time
         type: string
+
+  Commit:
+    type: object
+    properties:
+      author_date:
+        format: date-time
+        type: string
+      author_email:
+        format: email
+        type: string
+      author_login:
+        type: string
+      author_name:
+        type: string
+      body:
+        type: string
+      branch:
+        type: string
+      commit:
+        type: string
+      commit_url:
+        type: string
+      committer_date:
+        format: date-time
+        type: string
+      committer_email:
+        format: email
+        type: string
+      committer_login:
+        type: string
+      committer_name:
+        type: string
+      subject:
+        type: string
+
+  BuildRef:
+    type: object
+    properties:
+      build_num:
+        type: integer
+      build_time_millis:
+        type: integer
+      status:
+        type: string
+
+  UserShort:
+    type: object
+    properties:
+      email:
+        format: email
+        type: string
+      is_user:
+        type: boolean
+      login:
+        type: string
+      name:
+        type: string
+
+  Build:
+    type: object
+    properties:
+      all_commit_details:
+        type: array
+        items:
+          $ref: "#/definitions/Commit"
+      all_commit_details_truncated:
+        type: boolean
+      author_date:
+        format: date-time
+        type: string
+      author_email:
+        format: email
+        type: string
+      author_name:
+        type: string
+      body:
+        type: string
+      branch:
+        type: string
+      build_num:
+        type: integer
+#      build_parameters:
+      build_time_millis:
+        type: integer
+      build_url:
+        type: string
+      canceled:
+        type: boolean
+#      canceler:
+#       GitHubIdentity
+#      circle_yml:
+      committer_date:
+       format: date-time
+       type: string
+      committer_email:
+       format: email
+       type: string
+      committer_name:
+       type: string
+      compare:
+        type: string
+#      context_ids:
+      dont_build:
+        type: string
+#      fail_reason:
+      failed:
+        type: boolean
+      has_artifacts:
+        type: boolean
+      infrastructure_fail:
+        type: boolean
+      is_first_green_build:
+        type: boolean
+#      job_name:
+      lifecycle:
+        type: string
+#      node: null,
+      outcome:
+        type: string
+      parallel:
+        type: integer
+      previous:
+        $ref: "#/definitions/BuildRef"
+      previous_successful_build:
+        $ref: "#/definitions/BuildRef"
+      reponame:
+        type: string
+#  "retries": null,
+#  "retry_of": null,
+#  "ssh_enabled": null,
+#  "start_time": null,
+      status:
+        type: string
+#  "stop_time": null,
+      subject:
+        type: string
+      timedout:
+        type: boolean
+      usage_queued_at:
+       format: date-time
+       type: string
+      user:
+        $ref: "#/definitions/UserShort"
+      username:
+        type: string
+      vcs_revision:
+        type: string
+      vcs_tag:
+        type: string
+      vcs_url:
+        type: string
+      why:
+        type: string
+
+
+
