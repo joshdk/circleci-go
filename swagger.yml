@@ -261,16 +261,12 @@ definitions:
         type: string
       build_num:
         type: integer
-#      build_parameters:
       build_time_millis:
         type: integer
       build_url:
         type: string
       canceled:
         type: boolean
-#      canceler:
-#       GitHubIdentity
-#      circle_yml:
       committer_date:
        format: date-time
        type: string
@@ -281,10 +277,8 @@ definitions:
        type: string
       compare:
         type: string
-#      context_ids:
       dont_build:
         type: string
-#      fail_reason:
       failed:
         type: boolean
       has_artifacts:
@@ -293,27 +287,37 @@ definitions:
         type: boolean
       is_first_green_build:
         type: boolean
-#      job_name:
       lifecycle:
         type: string
-#      node: null,
+      no_dependency_cache:
+        type: boolean
+      oss:
+        type: boolean
       outcome:
         type: string
       parallel:
         type: integer
+      platform:
+        type: string
       previous:
         $ref: "#/definitions/BuildRef"
       previous_successful_build:
         $ref: "#/definitions/BuildRef"
+      queued_at:
+       format: date-time
+       type: string
       reponame:
         type: string
-#  "retries": null,
-#  "retry_of": null,
-#  "ssh_enabled": null,
-#  "start_time": null,
+      ssh_enabled:
+        type: boolean
+      start_time:
+       format: date-time
+       type: string
       status:
         type: string
-#  "stop_time": null,
+      stop_time:
+       format: date-time
+       type: string
       subject:
         type: string
       timedout:
@@ -329,10 +333,9 @@ definitions:
         type: string
       vcs_tag:
         type: string
+      vcs_type:
+        type: string
       vcs_url:
         type: string
       why:
         type: string
-
-
-
